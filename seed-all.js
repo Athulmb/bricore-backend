@@ -20,11 +20,11 @@ const seedAllData = async () => {
         console.log('Connected to MongoDB');
 
         // 1. Seed User
-        let admin = await User.findOne({ email: 'admin@gme.com' });
+        let admin = await User.findOne({ email: 'admin@britcore.com' });
         if (!admin) {
             admin = new User({
                 name: 'System Admin',
-                email: 'admin@gme.com',
+                email: 'admin@britcore.com',
                 password: 'password123',
                 role: 'Admin',
                 department: 'Management',
@@ -43,7 +43,7 @@ const seedAllData = async () => {
             rcNumber: 'RC-123456789',
             tin: 'TIN-987654321',
             phone: '+971 4 123 4567',
-            email: 'info@gme-global.com',
+            email: 'info@britcore.com',
             currency: 'AED',
             vatPercentage: 5,
             materialTypes: ['Iron Ore', 'Copper', 'Cobalt', 'Gold', 'Silver'],

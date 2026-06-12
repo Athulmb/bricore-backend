@@ -9,7 +9,7 @@ const seedCrushingData = async () => {
         await mongoose.connect(process.env.MONGODB_URI);
         console.log('Connected to MongoDB');
 
-        const adminUser = await User.findOne({ email: 'admin@gme.com' });
+        const adminUser = await User.findOne({ email: 'admin@britcore.com' });
         if (!adminUser) {
             console.log('Admin user not found, try running seed-test-data.js first.');
             process.exit(1);

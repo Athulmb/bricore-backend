@@ -8,13 +8,13 @@ exports.getSettings = async (req, res) => {
         let settings = await CompanySettings.findOne();
         if (!settings) {
             settings = new CompanySettings({
-                name: 'GME Interchange',
+                name: 'Britcore',
                 address: 'Behind FRSC Interchange Emergency Clinic, Sagamu Road, Ogun State, Nigeria',
                 rcNumber: 'RC-12345678',
                 tin: '27AABCU9603R1ZX',
                 phone: '+234-916-268-7000',
-                email: 'operations@gmeinterchange.com',
-                logo: '/src/assets/gme_logo.png',
+                email: 'operations@britcore.com',
+                logo: '/src/assets/britcore_logo.png',
                 vatPercentage: 7.5,
                 defaultDiscountType: 'Percentage',
                 defaultDiscountValue: 0,

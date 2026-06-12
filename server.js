@@ -70,7 +70,7 @@ const { protect } = require('./middleware/authMiddleware');
 // Public Routes
 app.use('/api/auth', authRoutes);
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'OK', message: 'GME Backend is running', timestamp: new Date() });
+    res.json({ status: 'OK', message: 'Britcore Backend is running', timestamp: new Date() });
 });
 
 // Protected Routes (Require Authentication)

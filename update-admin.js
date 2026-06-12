@@ -7,12 +7,12 @@ const updateAdmin = async () => {
         await mongoose.connect(process.env.MONGODB_URI);
         console.log('Connected to MongoDB');
 
-        const admin = await User.findOne({ email: 'admin@gme.com' });
+        const admin = await User.findOne({ email: 'admin@britcore.com' });
         if (!admin) {
             console.log('Admin not found, creating new one');
             const newAdmin = new User({
                 name: 'System Admin',
-                email: 'admin@gme.com',
+                email: 'admin@britcore.com',
                 password: 'admin123',
                 role: 'Admin',
                 initials: 'SA',

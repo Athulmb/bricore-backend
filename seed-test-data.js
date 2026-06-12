@@ -16,11 +16,11 @@ const seedData = async () => {
         });
 
         // Add dummy Admin
-        let testAdmin = await User.findOne({ email: 'admin@gme.com' });
+        let testAdmin = await User.findOne({ email: 'admin@britcore.com' });
         if (!testAdmin) {
             testAdmin = new User({
                 name: 'System Admin',
-                email: 'admin@gme.com',
+                email: 'admin@britcore.com',
                 password: 'password123',
                 role: 'Admin',
                 department: 'Management',
