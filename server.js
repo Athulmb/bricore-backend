@@ -95,13 +95,17 @@ app.use('/api/quotations', protect, quotationRoutes);
 
 // Basic Route (removed redundant line)
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// Seed
+const seedAdmin = require('./seed-admin');
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Database Connection & Server Start
+mongoose.connect(process.env.MONGODB_URI)
+    .then(async () => {
+        console.log('Connected to MongoDB');
+        await seedAdmin();
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch(err => console.error('MongoDB connection error:', err));
  
