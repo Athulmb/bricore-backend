@@ -96,7 +96,21 @@ app.use('/api/quotations', protect, quotationRoutes);
 // Basic Route (removed redundant line)
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI)
+const {
+    MONGO_URL,
+    MONGOUSER,
+    MONGOPASSWORD,
+    MONGOHOST,
+    MONGOPORT
+} = process.env;
+
+const mongoUri = (MONGO_URL && MONGO_URL !== 'undefined')
+    ? MONGO_URL
+    : `mongodb://${MONGOUSER}:${MONGOPASSWORD}@${MONGOHOST}:${MONGOPORT}/admin`;
+
+console.log(`Connecting to MongoDB via ${MONGO_URL && MONGO_URL !== 'undefined' ? 'MONGO_URL' : 'individual variables (MONGOUSER/MONGOPASSWORD/MONGOHOST/MONGOPORT)'}`);
+
+mongoose.connect(mongoUri)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
