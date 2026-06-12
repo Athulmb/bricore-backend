@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
 require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
+const seedAdmin = require('./seed-admin');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -95,13 +96,14 @@ app.use('/api/quotations', protect, quotationRoutes);
 
 // Basic Route (removed redundant line)
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
+// Database Connection & Server Start
+mongoose.connect(process.env.MONGO_URL)
+    .then(async () => {
+        console.log('Connected to MongoDB');
+        await seedAdmin();
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
     .catch(err => console.error('MongoDB connection error:', err));
-
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
  
