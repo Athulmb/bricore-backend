@@ -139,7 +139,13 @@ const seedAdmin = async () => {
         console.error('Error seeding admin:', error);
     }
 };
-const MONGOPASSWORD = process.env.MONGOPASSWORD || 'password';
+const MONGOPASSWORD = process.env.MONGOPASSWORD;
+
+if (!MONGOPASSWORD) {
+    console.error('FATAL: MONGOPASSWORD environment variable is not set. Cannot connect to MongoDB.');
+    process.exit(1);
+}
+
 const MONGODB_URI = `mongodb://root:${MONGOPASSWORD}@MongoDB-KLRD-oPKt.railway.internal:27017/admin`;
 
 mongoose.connect(MONGODB_URI)
