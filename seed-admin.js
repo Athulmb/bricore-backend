@@ -2,33 +2,17 @@ const mongoose = require('mongoose');
 const User = require('./models/User');
 require('dotenv').config({ path: require('path').resolve(__dirname, '.env') });
 
-const buildMongoUri = () => {
-    const { MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT, MONGODB_URI, MONGO_URL } = process.env;
-
-    // Prefer a fully-formed URI if already available
-    if (MONGODB_URI && (MONGODB_URI.startsWith('mongodb://') || MONGODB_URI.startsWith('mongodb+srv://'))) {
-        return MONGODB_URI;
-    }
-    if (MONGO_URL && (MONGO_URL.startsWith('mongodb://') || MONGO_URL.startsWith('mongodb+srv://'))) {
-        return MONGO_URL;
-    }
-
-    // Build from individual Railway service variables
-    if (MONGOUSER && MONGOPASSWORD) {
-        const host = MONGOHOST || 'MongoDB-KLRD.railway.internal';
-        const port = MONGOPORT || '27017';
-        return `mongodb://${MONGOUSER}:${MONGOPASSWORD}@${host}:${port}/admin`;
-    }
-
-    throw new Error(
-        'MongoDB connection details not found. Set MONGODB_URI, MONGO_URL, or MONGOUSER + MONGOPASSWORD environment variables.'
-    );
-};
-
 const seedAdmin = async () => {
     try {
-        const mongoUri = buildMongoUri();
-        console.log(`Connecting to MongoDB at host: ${new URL(mongoUri).hostname}`);
+        const { MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT } = process.env;
+
+        if (!MONGOUSER || !MONGOPASSWORD || !MONGOHOST || !MONGOPORT) {
+            console.error('Missing required MongoDB environment variables: MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT');
+            process.exit(1);
+        }
+
+        const mongoUri = `mongodb://${MONGOUSER}:${MONGOPASSWORD}@MongoDB-KLRD.railway.internal:27017/admin`;
+
         await mongoose.connect(mongoUri);
         console.log('Connected to MongoDB');
 
