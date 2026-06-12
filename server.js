@@ -17,6 +17,8 @@ const allowedOrigins = [
     'http://127.0.0.1:5173',
     'https://bricore-frontend-bricore.up.railway.app',
     'https://bricore-frontend-bricore.up.railway.app/',
+    'https://operation.bricoreresources.com',
+    'https://operation.bricoreresources.com/',
     process.env.FRONTEND_URL
 ].filter(Boolean); // Remove undefined/null values
 
