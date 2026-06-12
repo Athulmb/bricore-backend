@@ -139,7 +139,6 @@ const seedAdmin = async () => {
         console.error('Error seeding admin:', error);
     }
 };
-
 const MONGOPASSWORD = process.env.MONGOPASSWORD || 'password';
 const MONGODB_URI = `mongodb://root:${MONGOPASSWORD}@MongoDB-KLRD.railway.internal:27017/admin`;
 

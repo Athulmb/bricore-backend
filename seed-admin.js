@@ -25,38 +25,49 @@ const buildMongoUri = () => {
     );
 };
 
+// seedAdmin assumes an active mongoose connection is already open.
 const seedAdmin = async () => {
-    try {
-        const mongoUri = buildMongoUri();
-        console.log(`Connecting to MongoDB at host: ${new URL(mongoUri).hostname}`);
-        await mongoose.connect(mongoUri);
-        console.log('Connected to MongoDB');
-
-        const adminExists = await User.findOne({ email: 'admin@britcore.com' });
-        if (adminExists) {
-            console.log('Admin already exists');
-            process.exit(0);
-        }
-
-        const admin = new User({
-            name: 'System Admin',
-            email: 'admin@britcore.com',
-            password: 'admin123',
-            role: 'Admin',
-            initials: 'SA',
-            department: 'Administration',
-            status: 'Active'
-        });
-
-        await admin.save();
-        console.log('Admin user created successfully');
-        console.log('Email: admin@britcore.com');
-        console.log('Password: admin123');
-        process.exit(0);
-    } catch (error) {
-        console.error('Error seeding admin:', error);
-        process.exit(1);
+    const adminExists = await User.findOne({ email: 'admin@britcore.com' });
+    if (adminExists) {
+        console.log('Admin already exists');
+        return;
     }
+
+    const admin = new User({
+        name: 'System Admin',
+        email: 'admin@britcore.com',
+        password: 'admin123',
+        role: 'Admin',
+        initials: 'SA',
+        department: 'Administration',
+        status: 'Active'
+    });
+
+    await admin.save();
+    console.log('Admin user created successfully');
+    console.log('Email: admin@britcore.com');
+    console.log('Password: admin123');
 };
 
-seedAdmin();
+// Allow running directly: node seed-admin.js
+if (require.main === module) {
+    (async () => {
+        try {
+            const mongoUri = buildMongoUri();
+            console.log(`Connecting to MongoDB at host: ${new URL(mongoUri).hostname}`);
+            await mongoose.connect(mongoUri);
+            console.log('Connected to MongoDB');
+            await if (require.main === module) {
+    seedAdmin();
+}
+
+module.exports = { seedAdmin };
+            process.exit(0);
+        } catch (error) {
+            console.error('Error seeding admin:', error);
+            process.exit(1);
+        }
+    })();
+}
+
+module.exports = { seedAdmin };
