@@ -8,12 +8,12 @@ exports.getSettings = async (req, res) => {
         let settings = await CompanySettings.findOne();
         if (!settings) {
             settings = new CompanySettings({
-                name: 'Britcore',
-                address: 'Behind FRSC Interchange Emergency Clinic, Sagamu Road, Ogun State, Nigeria',
+                name: 'Bricore Resources',
+                address: 'Plot 14, Mining District Road Abuja, FCT, Nigeria',
                 rcNumber: 'RC-12345678',
                 tin: '27AABCU9603R1ZX',
-                phone: '+234-916-268-7000',
-                email: 'operations@britcore.com',
+                phone: '+234 (0) 800 BRICORE',
+                email: 'partnerships@bricoreresources.com',
                 logo: '/src/assets/britcore_logo.png',
                 vatPercentage: 7.5,
                 defaultDiscountType: 'Percentage',
@@ -29,6 +29,27 @@ exports.getSettings = async (req, res) => {
                 currency: 'AED'
             });
             await settings.save();
+        } else {
+            let modified = false;
+            if (settings.name === 'Britcore' || settings.name === 'Bricore' || settings.name === 'GME Interchange') {
+                settings.name = 'Bricore Resources';
+                modified = true;
+            }
+            if (settings.phone === '+234-916-268-7000' || settings.phone === '2349162687000') {
+                settings.phone = '+234 (0) 800 BRICORE';
+                modified = true;
+            }
+            if (settings.email === 'operations@britcore.com' || settings.email === 'info@gmeinterchange.com') {
+                settings.email = 'partnerships@bricoreresources.com';
+                modified = true;
+            }
+            if (settings.address && (settings.address.includes('FRSC Interchange Emergency Clinic') || settings.address.includes('Sagamu Road'))) {
+                settings.address = 'Plot 14, Mining District Road Abuja, FCT, Nigeria';
+                modified = true;
+            }
+            if (modified) {
+                await settings.save();
+            }
         }
         res.json(settings);
     } catch (error) {
