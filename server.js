@@ -97,13 +97,29 @@ app.use('/api/quotations', protect, quotationRoutes);
 
 // Basic Route (removed redundant line)
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// Seed admin import
+const { seedAdmin } = require('./seed-admin');
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Database Connection
+const { MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT } = process.env;
+
+if (!MONGOUSER || !MONGOPASSWORD || !MONGOHOST || !MONGOPORT) {
+    console.error('Missing required MongoDB environment variables: MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT');
+    process.exit(1);
+}
+
+const MONGODB_URI = `mongodb://${MONGOUSER}:${MONGOPASSWORD}@${MONGOHOST}:${MONGOPORT}/admin`;
+
+mongoose.connect(MONGODB_URI)
+    .then(async () => {
+        console.log('Connected to MongoDB');
+        await seedAdmin();
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1);
+    });
  
