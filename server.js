@@ -140,7 +140,7 @@ const seedAdmin = async () => {
     }
 };
 const MONGOPASSWORD = process.env.MONGOPASSWORD || 'password';
-const MONGODB_URI = `mongodb://root:${MONGOPASSWORD}@MongoDB-KLRD.railway.internal:27017/admin`;
+const MONGODB_URI = `mongodb://root:${MONGOPASSWORD}@MongoDB-KLRD-oPKt.railway.internal:27017/admin`;
 
 mongoose.connect(MONGODB_URI)
     .then(async () => {
