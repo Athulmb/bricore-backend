@@ -96,7 +96,16 @@ app.use('/api/quotations', protect, quotationRoutes);
 // Basic Route (removed redundant line)
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI)
+const { MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT } = process.env;
+
+if (!MONGOUSER || !MONGOPASSWORD || !MONGOHOST || !MONGOPORT) {
+    console.error('Missing required MongoDB environment variables (MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT). Exiting.');
+    process.exit(1);
+}
+
+const MONGO_URI = `mongodb://${MONGOUSER}:${MONGOPASSWORD}@${MONGOHOST}:${MONGOPORT}/admin`;
+
+mongoose.connect(MONGO_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
