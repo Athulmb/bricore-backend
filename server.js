@@ -101,14 +101,8 @@ app.use('/api/quotations', protect, quotationRoutes);
 const { seedAdmin } = require('./seed-admin');
 
 // Database Connection
-const { MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT } = process.env;
-
-if (!MONGOUSER || !MONGOPASSWORD || !MONGOHOST || !MONGOPORT) {
-    console.error('Missing required MongoDB environment variables: MONGOUSER, MONGOPASSWORD, MONGOHOST, MONGOPORT');
-    process.exit(1);
-}
-
-const MONGODB_URI = `mongodb://${MONGOUSER}:${MONGOPASSWORD}@${MONGOHOST}:${MONGOPORT}/admin`;
+const MONGOPASSWORD = process.env.MONGOPASSWORD || 'password';
+const MONGODB_URI = `mongodb://root:${MONGOPASSWORD}@MongoDB-KLRD.railway.internal:27017/admin`;
 
 mongoose.connect(MONGODB_URI)
     .then(async () => {
