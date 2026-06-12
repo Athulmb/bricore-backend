@@ -15,6 +15,8 @@ app.set('trust proxy', 1); // Trust first proxy (Railway/Nginx)
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
+    'https://bricore-frontend-bricore.up.railway.app',
+    'https://bricore-frontend-bricore.up.railway.app/',
     process.env.FRONTEND_URL
 ].filter(Boolean); // Remove undefined/null values
 
