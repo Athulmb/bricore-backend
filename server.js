@@ -98,12 +98,61 @@ app.use('/api/quotations', protect, quotationRoutes);
 // Basic Route (removed redundant line)
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+const User = require('./models/User');
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const seedAdmin = async () => {
+    try {
+        const adminExists = await User.findOne({ email: 'admin@bricore.com' });
+        if (!adminExists) {
+            const admin = new User({
+                name: 'System Admin',
+                email: 'admin@bricore.com',
+                password: 'admin123',
+                role: 'Admin',
+                initials: 'SA',
+                department: 'Administration',
+                status: 'Active'
+            });
+            await admin.save();
+            console.log('Admin user admin@bricore.com created successfully');
+        } else {
+            console.log('Admin user admin@bricore.com already exists');
+        }
+
+        const oldAdminExists = await User.findOne({ email: 'admin@britcore.com' });
+        if (!oldAdminExists) {
+            const oldAdmin = new User({
+                name: 'System Admin',
+                email: 'admin@britcore.com',
+                password: 'admin123',
+                role: 'Admin',
+                initials: 'SA',
+                department: 'Administration',
+                status: 'Active'
+            });
+            await oldAdmin.save();
+            console.log('Admin user admin@britcore.com created successfully');
+        } else {
+            console.log('Admin user admin@britcore.com already exists');
+        }
+    } catch (error) {
+        console.error('Error seeding admin:', error);
+    }
+};
+
+const MONGOPASSWORD = process.env.MONGOPASSWORD || 'password';
+const MONGODB_URI = `mongodb://root:${MONGOPASSWORD}@MongoDB-KLRD.railway.internal:27017/admin`;
+
+mongoose.connect(MONGODB_URI)
+    .then(async () => {
+        console.log('Connected to MongoDB');
+        await seedAdmin();
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1);
+    });
  
