@@ -57,11 +57,7 @@ if (require.main === module) {
             console.log(`Connecting to MongoDB at host: ${new URL(mongoUri).hostname}`);
             await mongoose.connect(mongoUri);
             console.log('Connected to MongoDB');
-            await if (require.main === module) {
-    seedAdmin();
-}
-
-module.exports = { seedAdmin };
+            await seedAdmin();
             process.exit(0);
         } catch (error) {
             console.error('Error seeding admin:', error);
